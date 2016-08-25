@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Alachisoft.NosDB.Core</RootNamespace>
     <AssemblyName>Alachisoft.NosDB.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
@@ -48,7 +48,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>nosdboss.snk</AssemblyOriginatorKeyFile>
@@ -57,23 +57,25 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
-      <HintPath>..\..\Resources\C5\C5.dll</HintPath>
+    <Reference Include="C5, Version=2.2.5073.27396, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <HintPath>..\packages\C5.2.2.5073.27396\lib\portable-net40+sl50+wp80+win\C5.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Google.ProtocolBuffers, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\protobufcsharp\net40\Google.ProtocolBuffers.dll</HintPath>
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Google.ProtocolBuffers.Serialization">
-      <HintPath>..\..\Resources\protobufcsharp\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+    <Reference Include="Google.ProtocolBuffers.Serialization, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="LightningDB, Version=0.0.0.0, Culture=neutral, PublicKeyToken=8a1e00327893b9ef, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\LighteningDB\LightningDB.dll</HintPath>
+    <Reference Include="LightningDB, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightningDB.0.9.4\lib\net45\LightningDB.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\Json.net\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -149,6 +151,15 @@
     <Compile Include="DBEngine\Management\ManagementHost.cs" />
     <Compile Include="DBEngine\RequestParser.cs" />
     <Compile Include="DBEngine\StreamReader.cs" />
+    <Compile Include="LightningDB.Converters\ConverterExtensions.cs" />
+    <Compile Include="LightningDB.Converters\ConverterNotFoundException.cs" />
+    <Compile Include="LightningDB.Converters\ConverterStore.cs" />
+    <Compile Include="LightningDB.Converters\ConvertFromBytesInstance.cs" />
+    <Compile Include="LightningDB.Converters\ConvertToBytesInstance.cs" />
+    <Compile Include="LightningDB.Converters\DefaultConverters.cs" />
+    <Compile Include="LightningDB.Converters\IConvertFromBytes.cs" />
+    <Compile Include="LightningDB.Converters\IConvertToBytes.cs" />
+    <Compile Include="LightningDB.Converters\LightningEnvironmentExtensions.cs" />
     <Compile Include="Management\ManagementInfo.cs" />
     <Compile Include="Management\NosDbManager.cs" />
     <Compile Include="Monitoring\ClientProcessStats.cs" />
@@ -392,6 +403,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="nosdboss.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Queries\Util\" />

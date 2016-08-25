@@ -33,8 +33,8 @@ namespace Alachisoft.NosDB.Core
         public KeyValuePair<TKey, TValue> Current()
         {
             KeyValuePair<byte[], byte[]> oppResult = _enumerator.Current;
-            TKey key = _environment.ConverterStore.GetFromBytes<TKey>().Convert(_database, oppResult.Key);
-            TValue value = _environment.ConverterStore.GetFromBytes<TValue>().Convert(_database, oppResult.Value);
+            TKey key = _environment.ConverterStore().GetFromBytes<TKey>().Convert(_database, oppResult.Key);
+            TValue value = _environment.ConverterStore().GetFromBytes<TValue>().Convert(_database, oppResult.Value);
 
             return new KeyValuePair<TKey, TValue>(key, value);
         }

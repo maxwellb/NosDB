@@ -51,12 +51,12 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
         //currently we are only giving integerbased keys and byte[] so the methods are not in use.
         private void RegisterCoverterToBytes<T>(IConvertToBytes<T> converter)
         {
-            _environment.ConverterStore.AddConvertToBytes(converter);
+            _environment.ConverterStore().AddConvertToBytes(converter);
         }
 
         private void RegisterConverterFromBytes<T>(IConvertFromBytes<T> converter)
         {
-            _environment.ConverterStore.AddConvertFromBytes(converter);
+            _environment.ConverterStore().AddConvertFromBytes(converter);
         }
         #endregion
 
@@ -190,7 +190,7 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
             CreateCollection(METADATA_COLLECTION, typeof(string), typeof(byte[]));
 
             StorageResult<long> fileSize = GetDocument<string, long>(METADATA_COLLECTION, "fileSize");
-            ChangeDataSize(fileSize.Document == 0 ? _environment.UsedSize : fileSize.Document);
+            ChangeDataSize(/*fileSize.Document == 0 ? _environment.UsedSize : */ fileSize.Document);
         }
 
         private void InitializePerviouslyStoredCollections()
@@ -362,8 +362,8 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
             ValidateTransaction(transaction);
             LightningTransaction lmdbTransaction = (LightningTransaction)transaction.InnerObject;
 
-            byte[] keyBytes = _environment.ConverterStore.GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
-            byte[] valueBytes = _environment.ConverterStore.GetToBytes<TValue>().Convert(_collectionTable[collection].Collection, value);
+            byte[] keyBytes = _environment.ConverterStore().GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
+            byte[] valueBytes = _environment.ConverterStore().GetToBytes<TValue>().Convert(_collectionTable[collection].Collection, value);
 
             try
             {
@@ -409,13 +409,13 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
             ValidateTransaction(transaction);
             LightningTransaction lmdbTransaction = (LightningTransaction)transaction.InnerObject;
 
-            byte[] keyBytes = _environment.ConverterStore.GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
+            byte[] keyBytes = _environment.ConverterStore().GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
             byte[] oldValBytes = lmdbTransaction.Get(_collectionTable[collection].Collection, keyBytes);
 
             long netSize = 0;
             netSize = -CaclulateSize(keyBytes, oldValBytes);
 
-            byte[] valueBytes = _environment.ConverterStore.GetToBytes<TValue>().Convert(_collectionTable[collection].Collection, update);
+            byte[] valueBytes = _environment.ConverterStore().GetToBytes<TValue>().Convert(_collectionTable[collection].Collection, update);
             try
             {
                 lmdbTransaction.Put(_collectionTable[collection].Collection, keyBytes, valueBytes);
@@ -464,9 +464,9 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
                 ValidateTransaction(transaction.Transaction);
                 LightningTransaction lmdbTransaction = (LightningTransaction)transaction.Transaction.InnerObject;
 
-                byte[] keyBytes = _environment.ConverterStore.GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
+                byte[] keyBytes = _environment.ConverterStore().GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
                 byte[] valueBytes = lmdbTransaction.Get(_collectionTable[collection].Collection, keyBytes);
-                result.Document = _environment.ConverterStore.GetFromBytes<TValue>().Convert(_collectionTable[collection].Collection, valueBytes);
+                result.Document = _environment.ConverterStore().GetFromBytes<TValue>().Convert(_collectionTable[collection].Collection, valueBytes);
             }
             finally
             {
@@ -492,11 +492,11 @@ namespace Alachisoft.NosDB.Core.Storage.Providers.LMDB
             ValidateTransaction(transaction);
             LightningTransaction lmdbTransaction = (LightningTransaction)transaction.InnerObject;
 
-            byte[] keyBytes = _environment.ConverterStore.GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
+            byte[] keyBytes = _environment.ConverterStore().GetToBytes<TKey>().Convert(_collectionTable[collection].Collection, key);
             byte[] valueBytes = lmdbTransaction.Get(_collectionTable[collection].Collection, keyBytes);
 
             long size = CaclulateSize(keyBytes, valueBytes);
-            result.Document = _environment.ConverterStore.GetFromBytes<TValue>().Convert(_collectionTable[collection].Collection, valueBytes);
+            result.Document = _environment.ConverterStore().GetFromBytes<TValue>().Convert(_collectionTable[collection].Collection, valueBytes);
             try
             {
                 lmdbTransaction.Delete(_collectionTable[collection].Collection, keyBytes);

@@ -37,3 +37,8 @@ Thumbs.db
 
 RnD/CSharpTest.Net.Collections/src/CSharpTest.Net.Collections/bin/
 RnD/CSharpTest.Net.Collections/src/CSharpTest.Net.Collections/obj/
+
+/Src/packages
+/Src/DBRegistry/x64/Release
+/Src/DBRegistry/Release32
+*.ipch
